@@ -22,7 +22,7 @@ spec:
         chart: petercat-awesome/hello-world
         targetRevision: 0.1.0 
       destination:
-        namespace: hello-world
+        namespace: default
         server: "{{server}}"
       syncPolicy:
         syncOptions:
