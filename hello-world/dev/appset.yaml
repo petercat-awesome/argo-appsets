@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: hello-world-dev
+  namespace: argocd
+spec:
+  generators:
+  - clusters:
+      selector:
+        matchExpressions:
+        - key: environment
+          operator: In
+          values:
+          - dev
+  template:
+    metadata:
+      name: "hello-world-dev-{{name}}"
+    spec:
+      project: default
+      source:
+        repoURL: ghcr.io    # OCI registry URL
+        chart: petercat-awesome/hello-world
+        targetRevision: 0.1.0 
+      destination:
+        namespace: hello-world
+        server: "{{server}}"
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+        automated:
+          prune: true
+          selfHeal: true
